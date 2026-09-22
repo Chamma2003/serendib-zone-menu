@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Serendib Zone | Digital Menu & Order</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- QRCode.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background Ambient Glow -->
+  <div class="bg-glow top-left"></div>
+  <div class="bg-glow bottom-right"></div>
+
+  <!-- App Wrapper -->
+  <div class="app-container">
+
+    <!-- Top Navigation Header -->
+    <header class="main-header">
+      <div class="header-content">
+        <div class="brand-box">
+          <div class="logo-icon"><i class="fa-solid fa-utensils"></i></div>
+          <div class="brand-text">
+            <h1 class="brand-name">SERENDIB ZONE</h1>
+            <span class="brand-tagline">Restaurant & Dining Lounge</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn qr-btn" id="openQrModalBtn" title="Universal QR Code">
+            <i class="fa-solid fa-qrcode"></i>
+            <span class="btn-tooltip">Menu QR</span>
+          </button>
+          <button class="table-badge-btn" id="changeTableBtn">
+            <i class="fa-solid fa-chair"></i>
+            <span id="currentTableLabel">Table #01</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Info Bar -->
+      <div class="info-bar">
+        <div class="info-item status-open">
+          <span class="status-dot"></span>
+          <span>Open Daily • 11:00 AM - 11:00 PM</span>
+        </div>
+        <a href="tel:0776606563" class="info-item phone-link">
+          <i class="fa-solid fa-phone"></i>
+          <span>077 660 6563</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Hero / Welcome Banner -->
+    <section class="hero-banner">
+      <div class="hero-card">
+        <div class="hero-text">
+          <h2>Welcome to Serendib Zone! 👋</h2>
+          <p>Scan our QR code, explore dishes, select your table number, calculate your bill, or call a waiter.</p>
+        </div>
+        <!-- Search Bar -->
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Search Kottu, Crab Curry, Mocktails..." autocomplete="off">
+          <button class="clear-search-btn" id="clearSearchBtn" style="display: none;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Pills Section -->
+    <section class="filter-section">
+      <div class="filter-scroll" id="filterTags">
+        <button class="filter-chip active" data-filter="all">
+          <i class="fa-solid fa-border-all"></i> All Items
+        </button>
+        <button class="filter-chip" data-filter="chef">
+          <i class="fa-solid fa-crown"></i> Chef's Special
+        </button>
+        <button class="filter-chip" data-filter="spicy">
+          <i class="fa-solid fa-pepper-hot"></i> Spicy 🌶️
+        </button>
+        <button class="filter-chip" data-filter="veg">
+          <i class="fa-solid fa-leaf"></i> Vegetarian 🌱
+        </button>
+        <button class="filter-chip" data-filter="seafood">
+          <i class="fa-solid fa-fish"></i> Seafood 🦐
+        </button>
+        <button class="filter-chip" data-filter="dessert">
+          <i class="fa-solid fa-ice-cream"></i> Desserts 🍰
+        </button>
+      </div>
+    </section>
+
+    <!-- Category Tabs Navigation (Sticky) -->
+    <nav class="category-nav" id="categoryNav">
+      <div class="category-scroll" id="categoryTabs">
+        <!-- Rendered dynamically by JS -->
+      </div>
+    </nav>
+
+    <!-- Main Menu Listing -->
+    <main class="menu-main">
+      <div class="menu-container" id="menuContainer">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+      <!-- Empty Search Result State -->
+      <div class="no-results" id="noResults" style="display: none;">
+        <i class="fa-solid fa-utensils-slash"></i>
+        <h3>No dishes found</h3>
+        <p>Try searching for something else or clear your filters.</p>
+        <button class="btn-secondary" id="resetSearchBtn">Show All Items</button>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>SERENDIB ZONE</h3>
+          <p>Authentic Dining & Lounge Experience</p>
+        </div>
+        <div class="footer-details">
+          <p><i class="fa-solid fa-clock"></i> Daily 11:00 AM – 11:00 PM</p>
+          <p><i class="fa-solid fa-phone"></i> Direct Line: <a href="tel:0776606563">077 660 6563</a></p>
+          <p><i class="fa-solid fa-qrcode"></i> Scan QR Code at your table to re-open menu</p>
+        </div>
+        <div class="footer-copyright">
+          © 2026 Serendib Zone Restaurant. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <!-- Floating Quick Order Bar (Bottom Sticky) -->
+    <div class="floating-cart-bar" id="floatingCartBar" style="display: none;">
+      <div class="cart-summary">
+        <div class="cart-icon-box">
+          <i class="fa-solid fa-receipt"></i>
+          <span class="cart-badge" id="cartBadgeCount">0</span>
+        </div>
+        <div class="cart-total-info">
+          <span class="cart-items-text" id="cartItemsText">0 items selected</span>
+          <span class="cart-total-price" id="cartTotalPrice">Rs. 0</span>
+        </div>
+      </div>
+      <div class="cart-action-buttons">
+        <button class="call-waiter-btn" id="quickWaiterBtn" title="Call Waiter">
+          <i class="fa-solid fa-bell"></i>
+        </button>
+        <button class="view-order-btn" id="openCartDrawerBtn">
+          <span>View Order</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+  </div> <!-- End App Container -->
+
+
+  <!-- DISH DETAILS MODAL -->
+  <div class="modal-overlay" id="dishModal">
+    <div class="modal-container dish-modal-content">
+      <button class="modal-close-btn" id="closeDishModalBtn">&times;</button>
+      
+      <div class="dish-modal-header">
+        <img id="modalDishImage" src="" alt="Dish Image">
+        <div class="dish-modal-badge" id="modalDishBadge">Chef's Choice</div>
+      </div>
+
+      <div class="dish-modal-body">
+        <div class="modal-title-row">
+          <h2 id="modalDishTitle">Dish Name</h2>
+          <span class="modal-dish-price" id="modalDishPrice">Rs. 0</span>
+        </div>
+        
+        <div class="modal-tags-row" id="modalDishTags">
+          <!-- Dynamic tags (spicy, veg, etc) -->
+        </div>
+
+        <p class="modal-dish-desc" id="modalDishDesc">Description goes here...</p>
+
+        <!-- Spice Preference -->
+        <div class="option-group" id="spiceOptionGroup">
+          <label class="option-label"><i class="fa-solid fa-pepper-hot"></i> Select Spice Level:</label>
+          <div class="spice-selector">
+            <button class="spice-chip" data-spice="Mild">Mild 🟢</button>
+            <button class="spice-chip active" data-spice="Medium">Medium 🌶️</button>
+            <button class="spice-chip" data-spice="Extra Hot">Hot 🌶️🌶️</button>
+          </div>
+        </div>
+
+        <!-- Special Instructions -->
+        <div class="option-group">
+          <label class="option-label" for="specialNotes"><i class="fa-solid fa-pen"></i> Special Kitchen Notes (Optional):</label>
+          <textarea id="specialNotes" rows="2" placeholder="e.g. Less oil, extra lime, allergy notes..."></textarea>
+        </div>
+
+        <!-- Quantity & Add Button -->
+        <div class="modal-footer-actions">
+          <div class="qty-control">
+            <button class="qty-btn" id="modalQtyMinus"><i class="fa-solid fa-minus"></i></button>
+            <span class="qty-display" id="modalQtyDisplay">1</span>
+            <button class="qty-btn" id="modalQtyPlus"><i class="fa-solid fa-plus"></i></button>
+          </div>
+          <button class="add-to-cart-btn" id="modalAddToCartBtn">
+            <span>Add to Order</span>
+            <span id="modalAddPrice">Rs. 0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ORDER DRAWER / CART MODAL -->
+  <div class="modal-overlay" id="cartDrawer">
+    <div class="modal-container drawer-container">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <i class="fa-solid fa-concierge-bell"></i>
+          <h2>Your Table Order</h2>
+        </div>
+        <button class="modal-close-btn" id="closeCartDrawerBtn">&times;</button>
+      </div>
+
+      <div class="table-selector-card">
+        <div class="table-input-group">
+          <label for="tableSelectInput"><i class="fa-solid fa-chair"></i> Select Your Table:</label>
+          <select id="tableSelectInput">
+            <option value="1" selected>Table #01</option>
+            <option value="2">Table #02</option>
+            <option value="3">Table #03</option>
+            <option value="4">Table #04</option>
+            <option value="5">Table #05</option>
+            <option value="6">Table #06</option>
+            <option value="Takeaway">Takeaway / Parcel</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="drawer-body">
+        <div class="cart-items-list" id="cartItemsList">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <div class="empty-cart-view" id="emptyCartView" style="display: none;">
+          <i class="fa-solid fa-basket-shopping"></i>
+          <p>Your order list is empty.</p>
+          <span>Tap on any dish from the menu to add it!</span>
+        </div>
+
+        <!-- Bill Calculation Summary -->
+        <div class="bill-summary-card" id="billSummaryCard">
+          <h3><i class="fa-solid fa-file-invoice-dollar"></i> Bill Estimate</h3>
+          <div class="bill-row">
+            <span>Items Subtotal</span>
+            <span id="billSubtotal">Rs. 0</span>
+          </div>
+          <div class="bill-row">
+            <span>Service Charge (10%)</span>
+            <span id="billServiceCharge">Rs. 0</span>
+          </div>
+          <div class="bill-row">
+            <span>Government Tax / VAT</span>
+            <span class="text-free">Included</span>
+          </div>
+          <div class="bill-row total-row">
+            <span>Estimated Total</span>
+            <span id="billGrandTotal">Rs. 0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="drawer-footer">
+        <div class="order-action-grid">
+          <button class="btn-action btn-waiter" id="drawerCallWaiterBtn">
+            <i class="fa-solid fa-bell"></i>
+            <span>Call Waiter</span>
+          </button>
+          <button class="btn-action btn-whatsapp" id="sendWhatsAppBtn">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span>Send via WhatsApp</span>
+          </button>
+          <button class="btn-action btn-primary btn-submit-order" id="submitKitchenOrderBtn">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Send to Kitchen</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- UNIVERSAL QR CODE MODAL FOR ALL TABLES -->
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-container qr-modal-content">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <i class="fa-solid fa-qrcode"></i>
+          <h2>Universal Table QR Code</h2>
+        </div>
+        <button class="modal-close-btn" id="closeQrModalBtn">&times;</button>
+      </div>
+
+      <div class="qr-modal-body">
+        <p class="qr-intro">Print this <strong>One Universal QR Code</strong> to place on all your tables! Guests scan this single QR code to view your menu and choose their table number (1 to 6).</p>
+        
+        <div class="form-group">
+          <label for="qrTargetUrl"><i class="fa-solid fa-globe"></i> Website / Menu Web Address:</label>
+          <input type="text" id="qrTargetUrl" value="" placeholder="e.g. https://serendibzone.com/menu">
+          <small>Leave default or type your custom domain URL.</small>
+        </div>
+
+        <button class="btn-primary full-width" id="generateUniversalQrBtn">
+          <i class="fa-solid fa-rotate"></i> Update QR Code
+        </button>
+
+        <!-- Single Universal Printable QR Standee Card -->
+        <div class="printable-universal-card" id="universalQrCard">
+          <div class="qr-card-header">
+            <h3>SERENDIB ZONE</h3>
+            <span>RESTAURANT & DINING LOUNGE</span>
+          </div>
+          <div class="qr-code-box" id="universalQrcode"></div>
+          <div class="qr-card-footer">
+            <div class="qr-scan-badge"><i class="fa-solid fa-camera"></i> SCAN FOR DIGITAL MENU</div>
+            <p>Welcome! Scan with your phone camera to view menu, select your table & order.</p>
+            <span class="qr-phone">📞 077 660 6563 • Open Daily 11:00 AM - 11:00 PM</span>
+          </div>
+        </div>
+
+        <div class="qr-actions">
+          <button class="btn-primary full-width-print" id="printUniversalQrBtn">
+            <i class="fa-solid fa-print"></i> Print Universal Table QR Card
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- NOTIFICATION TOAST -->
+  <div class="toast-notification" id="toast">
+    <i class="fa-solid fa-circle-check toast-icon" id="toastIcon"></i>
+    <span id="toastMsg">Action completed!</span>
+  </div>
+
+  <!-- JavaScript App Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
