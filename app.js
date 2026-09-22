@@ -679,7 +679,7 @@ function sendOrderWhatsApp() {
   text += `\n*ESTIMATED TOTAL:* Rs. ${total.toLocaleString()}\n`;
   text += `\nPlease confirm our table order! Thank you.`;
 
-  const phone = "94776606563";
+  const phone = "94776606533";
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
   window.open(url, "_blank");
 }
